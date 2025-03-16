@@ -1,0 +1,22 @@
+name: Docker Build and Push
+
+on: 
+  push: 
+    branches: 
+      - main # Runs when pushing to the main branch
+
+jobs: 
+  deploy: 
+    runs-on: ubuntu-latest
+    steps: 
+      - name: Checkout repository
+        uses: actions/checkout@4
+
+      - name: Log in to Docker Hub
+        run: echo "${{ secrets.DOCKER_PAT }}" | docker login -u "joeincrease1" --password-stdin
+
+      - name: Build and tag Docker image
+        run: docker build -t joeincrease1/myapp:latest .
+
+      - name: Push Docker image
+        run: docker push joeincrease1/myapp:latest
